@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
      <title>Pokedex jQuery</title>
-    <script src= "https://code.jquery.com/jquery-3.5.1.min.js" ></script >
+    <script src= "https://code.jquery.com/jquery-3.5.1.min.js" ></script>
     <!--
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
      -->
@@ -11,17 +11,57 @@
   <body>
 
 
-<ol id= "lista" >
-<!-- -->
-  <li class= "elemento" data-position= "1" >Primer elemento</li>
-  <li class= "elemento" data-position= "2" >Segundo elemento</li>
-  <li class= "elemento" data-position= "3" >Tercer elemento</li>
-<!-- -->
-</ol >
+    <ol id= "lista" >
+    </ol >
 
-<button id = "boton"> ¡Quiero ver más pokémon! </button>
+    <button id = "boton"> ¡Quiero ver más pokémon! </button>
 
+    <script>
+      fetch( 'https://pokeapi.co/api/v2/pokemon/' )
+        .then( function (response){
+          return response.json();
+        })
+        .then( function (data){
+          console.log(data);
+          pokemones_iniciales = data.results;
+          pokemones_iniciales.forEach((pokemon, i) => {
+              console.log(pokemon.name);
+              var lista = document.querySelector('#lista');
+              var li = document.createElement('li');
+              li.appendChild(document.createTextNode(`${pokemon.name}`));
+              var but = document.createElement('button');
+              but.appendChild(document.createTextNode("¡Quiero saber más de este pokémon!"));
+              li.appendChild(but);
+              lista.appendChild(li);
+          })
+        });
 
+        var offset_pokemones = 20;
+
+          boton.addEventListener( 'click' , function (){
+            alert(`20 pokemones mas a su orden. trayendo desde el ${offset_pokemones}`);
+            fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset_pokemones}`)
+              .then(function (response){
+                return response.json();
+              })
+              .then(function (data){
+                console.log(data);
+                pokemones_iniciales = data.results;
+                pokemones_iniciales.forEach((pokemon, i) => {
+                    console.log(pokemon.name);
+                    var lista = document.querySelector('#lista');
+                    var li = document.createElement('li');
+                    li.appendChild(document.createTextNode(`${pokemon.name}`));
+                    var but = document.createElement('button');
+                    but.appendChild(document.createTextNode("¡Quiero saber más de este pokémon!"));
+                    li.appendChild(but);
+                    lista.appendChild(li);
+                })
+              });
+            offset_pokemones +=20;
+          });
+
+    </script>
 
 
 
